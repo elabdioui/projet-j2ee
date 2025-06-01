@@ -1,11 +1,10 @@
 package service;
 
-
+import DTO.ProduitDTO;
 import entities.Categorie;
 import entities.Produit;
 
 import java.util.List;
-
 
 public interface ProduitService {
     ProduitDTO saveProduit(Produit p);
