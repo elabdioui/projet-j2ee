@@ -124,8 +124,8 @@ Ce projet est un système complet de gestion de produits développé avec **Spri
 
 ### 1. Clone du Repository
 ```bash
-git clone [URL_DU_REPOSITORY]
-cd produit-management-system
+git clone https://github.com/elabdioui/projet-j2ee
+cd projet-j2ee
 ```
 
 ### 2. Configuration de la Base de Données
