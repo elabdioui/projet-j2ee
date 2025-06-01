@@ -91,6 +91,12 @@ public class ProduitServiceImpl implements ProduitService {
     public ProduitDTO convertEntityToDto(Produit produit) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         ProduitDTO produitDTO = modelMapper.map(produit, ProduitDTO.class);
+
+        // Mapping manuel pour nomCat si nécessaire
+        if (produit.getCategorie() != null) {
+            produitDTO.setNomCat(produit.getCategorie().getNomCat());
+        }
+
         return produitDTO;
     }
 

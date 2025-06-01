@@ -10,38 +10,38 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class ProduitRESTController {
 
     @Autowired
     ProduitService produitService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public List<ProduitDTO> getAllProduits() {
         return produitService.getAllProduits();
     }
 
-    @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public ProduitDTO getProduitById(@PathVariable("id") Long id) {
         return produitService.getProduit(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public ProduitDTO createProduit(@RequestBody ProduitDTO produitDTO) {
         return produitService.saveProduit(produitService.convertDtoToEntity(produitDTO));
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @PutMapping
     public ProduitDTO updateProduit(@RequestBody ProduitDTO produitDTO) {
         return produitService.updateProduit(produitService.convertDtoToEntity(produitDTO));
     }
 
-    @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{id}")
     public void deleteProduit(@PathVariable("id") Long id) {
         produitService.deleteProduitById(id);
     }
 
-    @RequestMapping(value="/prodscat/{idCat}", method = RequestMethod.GET)
+    @GetMapping("/prodscat/{idCat}")
     public List<Produit> getProduitsByCatId(@PathVariable("idCat") Long idCat) {
         return produitService.findByCategorieIdCat(idCat);
     }

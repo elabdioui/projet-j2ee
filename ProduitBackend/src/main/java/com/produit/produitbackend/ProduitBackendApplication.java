@@ -12,10 +12,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 import entities.Produit;
+import entities.Categorie;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"entities"})
-@ComponentScan(basePackages = {"RestController", "service", "DTO"})
+@ComponentScan(basePackages = {"RestController", "service", "DTO", "com.produit.produitbackend"})
 @EnableJpaRepositories(basePackages = {"repos"})
 public class ProduitBackendApplication implements CommandLineRunner {
 
@@ -33,6 +34,6 @@ public class ProduitBackendApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repositoryRestConfiguration.exposeIdsFor(Produit.class);
+        repositoryRestConfiguration.exposeIdsFor(Produit.class, Categorie.class);
     }
 }
