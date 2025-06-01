@@ -5,9 +5,14 @@ import entities.Categorie;
 import entities.Produit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repos.ImageRepository;
 import repos.ProduitRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +21,9 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Autowired
     ProduitRepository produitRepository;
+
+    @Autowired
+    ImageRepository imageRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -27,7 +35,23 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public ProduitDTO updateProduit(Produit p) {
-        return convertEntityToDto(produitRepository.save(p));
+        Long oldProdImageId = null;
+        if (this.getProduit(p.getIdProduit()).getImage() != null) {
+            oldProdImageId = this.getProduit(p.getIdProduit()).getImage().getIdImage();
+        }
+
+        Long newProdImageId = null;
+        if (p.getImage() != null) {
+            newProdImageId = p.getImage().getIdImage();
+        }
+
+        Produit prodUpdated = produitRepository.save(p);
+
+        if (oldProdImageId != null && newProdImageId != null && !oldProdImageId.equals(newProdImageId)) {
+            imageRepository.deleteById(oldProdImageId);
+        }
+
+        return convertEntityToDto(prodUpdated);
     }
 
     @Override
@@ -37,6 +61,14 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public void deleteProduitById(Long id) {
+        Produit p = produitRepository.findById(id).orElse(null);
+        if (p != null && p.getImagePath() != null) {
+            try {
+                Files.delete(Paths.get(System.getProperty("user.home") + "/images/" + p.getImagePath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         produitRepository.deleteById(id);
     }
 
@@ -92,7 +124,6 @@ public class ProduitServiceImpl implements ProduitService {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         ProduitDTO produitDTO = modelMapper.map(produit, ProduitDTO.class);
 
-        // Mapping manuel pour nomCat si nécessaire
         if (produit.getCategorie() != null) {
             produitDTO.setNomCat(produit.getCategorie().getNomCat());
         }

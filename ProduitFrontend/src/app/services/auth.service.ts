@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  apiURL: string = 'http://localhost:8081/users';
+  apiURL: string = 'http://localhost:8080/produits/users';
   token!: string;
   public loggedUser!: string;
   public isloggedIn: Boolean = false;

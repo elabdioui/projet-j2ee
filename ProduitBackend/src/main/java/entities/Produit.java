@@ -1,8 +1,8 @@
 package entities;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Produit {
@@ -12,9 +12,16 @@ public class Produit {
     private String nomProduit;
     private Double prixProduit;
     private Date dateCreation;
+    private String imagePath;
 
     @ManyToOne
     private Categorie categorie;
+
+    @OneToOne
+    private Image image;
+
+    @OneToMany(mappedBy = "produit")
+    private List<Image> images;
 
     public Produit() {
         super();
@@ -27,6 +34,7 @@ public class Produit {
         this.dateCreation = dateCreation;
     }
 
+    // Getters and Setters
     public Long getIdProduit() {
         return idProduit;
     }
@@ -59,12 +67,36 @@ public class Produit {
         this.dateCreation = dateCreation;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public Categorie getCategorie() {
         return categorie;
     }
 
     public void setCategorie(Categorie categorie) {
         this.categorie = categorie;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
     @Override
